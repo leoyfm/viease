@@ -158,11 +158,25 @@ class MenuRepository
      */
     public function withMaterials($menus)
     {
+
+
+
         return array_map(function ($menu) {
 
-            $mediaId = $this->eventRepository->getEventByKey($menu['key'])->value;
 
-            $menu['material'] = $this->materialRepository->getMaterialByMediaId($mediaId);
+
+            if( $menu['type']=='click'){
+                $mediaId = $this->eventRepository->getEventByKey($menu['key']);
+                $menu['material'] =$mediaId; 
+                // dd($mediaId);
+                // die();
+                // $menu['material'] = $this->materialRepository->getMaterialByMediaId($mediaId);
+            }
+
+            if( !empty($menu['sub_buttons'])){
+
+                $menu['sub_buttons'] = $this->withMaterials($menu['sub_buttons']);
+            }
 
             return $menu;
         }, $menus);

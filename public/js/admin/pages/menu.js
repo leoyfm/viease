@@ -23,28 +23,37 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
         // listsMenuFromDB();
         // 显示菜单列表
         function listsMenuFromDB () {
+
+            console.log('listsMenuFromDB');
             MenuRepo.getMenus(function($menus){
-                console.log($menus);
+                console.log('result menu',$menus);
                 // clean
                 $menusListContainer.html('').removeClass('no-menus');
+
+
+                listMenusFromDb( $menus );
+                return $menus;
 
                 $res = {};
 
                 //TODO:
-                // _.each($menus, function($menu){
-                //     var $id = (new Date).getTime();
+                _.each($menus, function($menu){
+                    var $id = (new Date).getTime();
 
-                //     $res[$id] = {
-                //         id: $id,
-                //         name: $menu['name'],
-                //         type: $menu['type'],
-                //     };
-                // });
+                    $res[$id] = {
+                        id: $id,
+                        name: $menu['name'],
+                        type: $menu['type'],
+                    };
+                });
+
+                console.log('res', $res);
                 return $res;
             });
         }
 
         function listMenus ($menus) {
+            console.log('listMenus');
             for ($id in $menus) {
                 var $button = $menus[$id];
                 var $target = $menusListContainer;
@@ -59,14 +68,91 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
             }
         }
 
+        function parseMenuFormDB(){
+
+
+
+        }
+
+        function listMenusFromDb( $menus ){
+            Menu.clean();
+
+            for($id in $menus ){
+
+                var $iid = (new Date).getTime();
+
+
+                var item = {id:$iid,name:$menus[$id].name};
+
+                if( $menus[$id].sub_buttons.length == 0){
+                    item.hasChild =false;
+                    item.parent = 0;
+                    item.content={type: $menus[$id].type, 'text':$menus[$id].key};
+
+                    switch ($menus[$id].type){
+
+                        case 'view':
+                            item.content={type: 'url'};
+                            item.content['url'] = $menus[$id].key;
+                            break;
+                        case 'click':
+                            item.content={type: 'text'};
+                            item.content['text'] = $menus[$id].material['value'];
+                            break;
+
+                    }
+
+                    Menu.put( $iid, item);
+
+                    //put to store;
+                }else{
+                    item.hasChild =true;
+                    item.parent = 0;
+                    item.content={};
+
+                    //put to store
+                    Menu.put( $iid, item);
+                    var $submenus = $menus[$id].sub_buttons;
+                    for( var $cid in $submenus ){
+                        var $ccid = (new Date).getTime();
+                        var citem = {id:$ccid,name:$submenus[$cid].name};
+                        
+                        citem.hasChild =false;
+                        citem.parent = $iid;
+                     
+                        switch ($submenus[$cid].type){
+
+                            case 'view':
+                                citem.content={type: 'url'};
+                                citem.content['url'] = $submenus[$cid].key;
+                                break;
+                            case 'click':
+                                citem.content={type: 'text'};
+                                citem.content['text'] = $submenus[$cid].material['value'];
+                                break;
+
+                        }
+                        
+                        //put to store;
+                        Menu.put( $ccid, citem);
+                    }
+                }
+            }
+
+            $menus = Menu.all();
+            listMenus( $menus);
+
+        }
+
         // 本地存储的
         var $cachedMenus = Menu.all();
 
-        if ($cachedMenus) {
+
+        if (!$.isEmptyObject($cachedMenus)) {
             listMenus($cachedMenus);
         } else {
             $menus = listsMenuFromDB();
-            console.log($menus);
+            listMenusFromDb($menus);
         }
 
         /**
@@ -241,14 +327,21 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
         // 提交设置好的菜单到后端
         function submitMenu () {
             var $menus = Menu.all();
+
+            console.log( 'all menu', $menus );
             var $data = {};
 
             for($id in $menus){
+                console.log( 'menu item', $menus[$id] );
                 var $item = {
                     name: $menus[$id].name,
-                    type: $menus[$id]['type'] ? ($menus[$id]['type'] == 'url' ? 'view' : $menus[$id]['type']) : null,
+                    type: $menus[$id]['content']['type'] ? ($menus[$id]['content']['type'] == 'url' ? 'view' : $menus[$id]['content']['type']) : null,
                 };
-                $item['value'] = $menus[$id]['content'][$menus[$id]['type']];
+
+                console.log( 'menu item type', $menus[$id]['content']['type'] );
+                
+                $item['value'] = $menus[$id]['content'][$menus[$id]['content']['type']];
+                console.log( 'menu item', $item );
 
                 if (!$menus[$id].hasChild && !$item['value']) {
                     return error('请设置菜单 "'+$item.name+'" 的响应内容！');
