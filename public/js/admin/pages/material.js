@@ -3,7 +3,7 @@
  *
  * @author overtrue <anzhengchao@gmail.com>
  */
-define(['jquery', 'repos/material', 'uploader', 'pager', 'admin/common'], function ($, Material, Uploader, Pager) {
+define(['jquery', 'repos/material', 'uploader', 'pager', 'admin/common','repos/article-store'], function ($, Material, Uploader, Pager,Article) {
     $(function(){
         var $emptyContentTemplate = _.template($('#no-content-template').html());
 
@@ -29,7 +29,7 @@ define(['jquery', 'repos/material', 'uploader', 'pager', 'admin/common'], functi
 
         // 当无内容时显示“无内容”提示
         $('.panel-body.empty-listener').ifEmpty(function($el){
-            $el.html($emptyContentTemplate()).addClass('no-content');;
+            $el.html($emptyContentTemplate()).addClass('no-content');
         });
 
         /**
@@ -48,12 +48,17 @@ define(['jquery', 'repos/material', 'uploader', 'pager', 'admin/common'], functi
             };
 
             Material.lists($request, function($items){
+
+                console.log( 'load items', $items );
                 var $template = $templates[$type];
                 var $container = $containers[$type];
 
                 $container.html('');
 
                 _.each($items, function($item) {
+
+                    $id = (new Date).getTime();
+                    // Article.put( $id, $item);
                     $container.append($template($item));
                 });
                 $pagers[$type].display({
@@ -77,6 +82,7 @@ define(['jquery', 'repos/material', 'uploader', 'pager', 'admin/common'], functi
             return new Pager('#' + $type + ' .pagination-bar', {
                                 classes: 'border-top',
                                 onChange: function($page){
+                                    console.log('on change load');
                                     load($type, $page);
                                 }
                             })

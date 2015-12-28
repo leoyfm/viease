@@ -3,7 +3,7 @@
  *
  * @author overtrue <anzhengchao@gmail.com>
  */
-define(['jquery', 'uploader', 'util', 'repos/article-store', 'admin/common'], function ($, Uploader, Util, Article) {
+define(['jquery', 'uploader', 'util', 'repos/article-store','repos/material', 'admin/common'], function ($, Uploader, Util, Article, ArticleRepo) {
     $(function(){
         var $ue = UE.getEditor('container');
         var $form = $('.article-form');
@@ -13,6 +13,8 @@ define(['jquery', 'uploader', 'util', 'repos/article-store', 'admin/common'], fu
         var $imageUploader = Uploader.make('.upload-image', 'image', function(){
 
         });
+
+
 
         //检查是否显示添加按钮
         function performAddBtn () {
@@ -47,9 +49,14 @@ define(['jquery', 'uploader', 'util', 'repos/article-store', 'admin/common'], fu
 
         // 渲染预览框
         function previewItem ($attributes) {
+
+
             var $item = $('.article-preview-item.active');
 
             $item.find('.attr-title').html($attributes['title'] || '标题');
+
+            $cover =  $item.find('.article-preview-item-cover-placeholder');
+            $cover.css('background-image','url(http://localhost:8000/materials/images/201512/4ac70b2d0f2f9d903bd0d1b09aff4712)').css('background-size', 'cover')
         }
 
         // 保存form
@@ -102,17 +109,38 @@ define(['jquery', 'uploader', 'util', 'repos/article-store', 'admin/common'], fu
             });
         });
 
-        var $articles = Article.all();
 
-        console.log('all articles', $articles );
 
-        for($id in $articles){
-            if ($id == 'article-first') {continue;};
+        var media_id = $('.well.row').data('id'); 
 
-            $firstItem.after($($previewItemTemplate({item: $articles[$id]})).prop('id', $id));
-        }
+        console.log( 'media_id', media_id );
 
-        // 初始化
-        $firstItem.find('a.edit').click();
+
+        ArticleRepo.getByMediaId( media_id, function( article ){
+
+            console.log('show article', article);
+
+            Article.put('article-first', article );
+
+            for($id in article.childrens){
+
+                console.log('add child');
+                $firstItem.after($($previewItemTemplate({item: article.childrens[$id]})).prop('id', (new Date).getTime()));
+            }
+             $firstItem.find('a.edit').click();
+        });
+
+        // var $articles = Article.all();
+
+        // console.log('all articles', $articles );
+
+        // for($id in $articles){
+        //     if ($id == 'article-first') {continue;};
+
+        //     $firstItem.after($($previewItemTemplate({item: $articles[$id]})).prop('id', $id));
+        // }
+
+        // // 初始化
+        // $firstItem.find('a.edit').click();
     });
 });

@@ -62,7 +62,7 @@ class MaterialRepository
      */
     public function getMediaById($id)
     {
-        return $this->model->where('id', $mediaId)->with('childrens')->first();
+        return $this->model->where('id', $id)->with('childrens')->first();
     }
 
     /**
@@ -72,7 +72,7 @@ class MaterialRepository
      *
      * @return App\Models\Material|NULL
      */
-    public function getMaterialByMediaId($mediaId)
+    public function getMediaByMediaId($mediaId)
     {
         return $this->model->where('media_id', $mediaId)->with('childrens')->first();
     }
@@ -269,6 +269,24 @@ class MaterialRepository
         $model->original_id = $image['media_id'];
 
         $model->source_url = $image['local_url'];
+
+        $model->save();
+
+        return $model->media_id;
+    }
+
+    public function storeWechatActicleCover($accountId, $image)
+    {
+        $model = new $this->model();
+
+        $model->type = 'image';
+
+
+        $model->account_id = $accountId;
+
+        $model->original_id = $image['cover_media_id'];
+
+        $model->source_url = $image['cover_url'];
 
         $model->save();
 

@@ -1,15 +1,15 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="console-content">
+<div class="console-content" data-id="{{$id}}">
     <div class="page-header">
-        <h2 id="nav">素材管理 - 新建图文 <a href="{{ admin_url('material') }}" class="btn btn-success btn-sm">返回素材列表</a></h2>
+        <h2 id="nav">素材管理 - 编辑图文 <a href="{{ admin_url('material') }}" class="btn btn-success btn-sm">返回素材列表</a></h2>
     </div>
-    <div class="well row">
+    <div class="well row" data-id="{{$id}}">
         <div class="col-md-4">
             <div class="articles-preview-container">
                 <div class="article-preview-item first" id="article-first">
-                    <div class="article-preview-item-cover-placeholder">封面图片</div>
+                    <div class="article-preview-item-cover-placeholder" >封面图片</div>
                     <div class="article-preview-item-title attr-title">标题</div>
                     <div class="article-preview-item-edit-links"><a href="javascript:;" class="edit"><i class="ion-edit"></i></a></div>
                 </div>

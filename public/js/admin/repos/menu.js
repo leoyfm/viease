@@ -64,6 +64,24 @@ define(['jquery', 'util'], function($, Util){
                 menus: $menus
             };
             Util.request('POST', 'menu/store', $request, $callback);
+        },
+
+        /**
+         * 同步菜单从微信服务器
+         * @param  {[type]} $callback [description]
+         * @return {[type]}           [description]
+         */
+        syncMenu: function( $callback){
+            Util.request('GET', 'menu/sync', {}, $callback);
+        },
+
+        /**
+         * 应用菜单到微信服务器
+         * @param  {[type]} $callback [description]
+         * @return {[type]}           [description]
+         */
+        applyMenu: function( $callback){
+            Util.request('GET', 'menu/apply', {}, $callback);
         }
     };
 

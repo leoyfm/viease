@@ -12,6 +12,8 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
         var $menuItemTemplate       = _.template($('#menu-item-template').html());
         var $responseContainer = $('.response-content');
 
+
+
         // 监听变化
         $menusListContainer.ifEmpty(function(el){
             el.html($emptyMenusTemplate()).addClass('no-menus');
@@ -54,6 +56,8 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
 
         function listMenus ($menus) {
             console.log('listMenus');
+
+            console.log($menus);
             for ($id in $menus) {
                 var $button = $menus[$id];
                 var $target = $menusListContainer;
@@ -64,14 +68,9 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
 
                 $target.removeClass('no-menus');
 
+                console.log('add menu', $button);
                 $target.append($($menuItemTemplate({ menu: $button })).data($button));
             }
-        }
-
-        function parseMenuFormDB(){
-
-
-
         }
 
         function listMenusFromDb( $menus ){
@@ -79,8 +78,10 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
 
             for($id in $menus ){
 
-                var $iid = (new Date).getTime();
+                console.log('o menu', $menus[ $id] );
 
+                var $iid = (new Date).getTime();
+                console.log('new menu id', $iid );
 
                 var item = {id:$iid,name:$menus[$id].name};
 
@@ -102,6 +103,7 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
 
                     }
 
+                    console.log('new menu', item );
                     Menu.put( $iid, item);
 
                     //put to store;
@@ -110,10 +112,13 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
                     item.parent = 0;
                     item.content={};
 
+                    console.log('new menu', item );
                     //put to store
                     Menu.put( $iid, item);
                     var $submenus = $menus[$id].sub_buttons;
                     for( var $cid in $submenus ){
+
+                        console.log('o sub menu '+ $cid, $submenus[$cid] );
                         var $ccid = (new Date).getTime();
                         var citem = {id:$ccid,name:$submenus[$cid].name};
                         
@@ -132,7 +137,7 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
                                 break;
 
                         }
-                        
+                        console.log('n sub menu '+ $cid, citem );
                         //put to store;
                         Menu.put( $ccid, citem);
                     }
@@ -146,6 +151,7 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
 
         // 本地存储的
         var $cachedMenus = Menu.all();
+        // $cachedMenus = {};
 
 
         if (!$.isEmptyObject($cachedMenus)) {
@@ -154,6 +160,8 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
             $menus = listsMenuFromDB();
             listMenusFromDb($menus);
         }
+
+
 
         /**
          * 创建表单
@@ -185,6 +193,40 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
             $('.response-content').html($blankslate);
         }
 
+        //同步按钮
+        $(document).on('click', '.btn-sync', function(event){
+            event.stopPropagation();
+            MenuRepo.syncMenu(function( res ){
+
+                console.log('res', res);
+
+                if(res.status){
+                    Menu.clean();
+                    success('保存成功！');
+                    setTimeout(function(){
+                        window.location.reload();
+                    }, 1500);
+                }
+            });
+        });
+
+        //应用按钮
+        $(document).on('click', '.btn-apply', function(event){
+            event.stopPropagation();
+            MenuRepo.applyMenu(function( res ){
+
+                console.log('res', res);
+
+                if(res.status){
+                    Menu.clean();
+                    success('保存成功！');
+                    setTimeout(function(){
+                        window.location.reload();
+                    }, 1500);
+                }
+            });
+        });
+
         // 创建一级
         $(document).on('click', '.add-menu-item', function(event){
             event.stopPropagation();
@@ -214,6 +256,8 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
             var $item = $(this).closest('.menu-item');
 
             $item.slideUp(300, function(){
+
+                console.log('delete menu id',$(this).attr('id') );
                 Menu.delete($(this).attr('id'));
                 $(this).remove();
 
@@ -239,11 +283,14 @@ define(['jquery', 'repos/menu-store', 'repos/menu', 'WeChatEditor', 'util', 'adm
             if ($menu['hasChild']) {
                 return showFirstLevelContent($menu);
             };
+            
+
+            console.log('reponse content', $responseContainer );
 
             new ResponsePicker($responseContainer, {
                 current: $menu.content,
                 onChanged: function($item){
-                    console.log($item);
+                    console.log('pasr',$item);
                     Menu.update($menu.id, {content: $item});
                 }
             });

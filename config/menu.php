@@ -44,18 +44,18 @@ return [
                             'label' => '实时消息',
                             'uri'   => 'message/timeline',
                         ],
-                        // [
-                        //     'label' => '消息群发',
-                        //     'uri'   => 'message/broadcasting',
-                        // ],
+                        [
+                            'label' => '消息群发',
+                            'uri'   => 'message/broadcasting',
+                        ],
                         [
                             'label' => '消息资源库',
                             'uri'   => 'message/resource',
                         ],
-                        // [
-                        //     'label' => '模板消息',
-                        //     'uri'   => 'notice',
-                        // ],
+                        [
+                            'label' => '模板消息',
+                            'uri'   => 'notice',
+                        ],
 
                     ],
                 ],
@@ -79,10 +79,10 @@ return [
                             'label' => '自动回复',
                             'uri'   => 'reply',
                         ],
-                        // [
-                        //     'label' => '客服管理',
-                        //     'uri'   => 'staff',
-                        // ],
+                        [
+                            'label' => '客服管理',
+                            'uri'   => 'staff',
+                        ],
                     ],
                 ],
             ],
