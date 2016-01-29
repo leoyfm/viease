@@ -20,6 +20,11 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\MaterialSync' => [
             'App\Listeners\AccountListener',
         ],
+
+        'App\Events\UnSubscribe' => [
+            'App\Listeners\UnSubscribeListener',
+        ]
+
     ];
 
     /**

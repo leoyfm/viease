@@ -131,6 +131,8 @@ function ($, _, Util, WeChatEditor, MediaPicker, Material) {
     }
 
     ResponsePicker.prototype.addListeners = function () {
+
+        console.log('bind event once');
         var $picker = this;
         var $form = this.container.find('.tab-content');
 
@@ -157,13 +159,23 @@ function ($, _, Util, WeChatEditor, MediaPicker, Material) {
             $picker.preview({url: $(this).val()});
         });
 
+        $(this.selector).off('click', '.tab-pane.active .response-picker-form-btn');
+
         // 编辑/保存
+        console.log('this selector', $(this.selector) );
         $(this.selector).on('click', '.tab-pane.active .response-picker-form-btn', function(event){
-            console.log($(this));
+            event.preventDefault();
+            event.stopPropagation();
+            console.log('click save or editor btn');
+            console.log( 'this',$(this) );
+          
             if ($(this).hasClass('btn-success')) {
+                console.log('save form');
                 $picker.saveForm();
             } else {
-                $picker.showForm($picker.getCurrentTab().data('form'));
+                console.log('show form');
+                console.log('current tab', $picker.getCurrentTab().data('form') || $picker.current );
+                $picker.showForm($picker.getCurrentTab().data('form') || $picker.current);
             }
         });
 
@@ -231,6 +243,7 @@ function ($, _, Util, WeChatEditor, MediaPicker, Material) {
         if (!$data) {
             return;
         };
+        console.log('show in form');
 
         var $tab = $('.tab-pane#'+$data.type+'-tab-content-'+this.unique_id);
         var $previewContainer = $tab.find('.preview-container');
@@ -265,6 +278,8 @@ function ($, _, Util, WeChatEditor, MediaPicker, Material) {
     ResponsePicker.prototype.saveForm = function ($temp) {
         var $tab = this.getCurrentTab();
         var $data = $temp || $tab.data('form');
+
+        console.log('save form data', $data);
 
         var $resultContainer = $tab.find('.result-container');
 

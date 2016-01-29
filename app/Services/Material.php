@@ -212,12 +212,15 @@ class Material
     {
         $countNumber = $this->getRemoteMaterialCount($account, $type);
 
+
         for ($offset = self::MATERIAL_DEFAULT_OFFSET;
              $offset < $countNumber;
              $offset += self::MATERIAL_MAX_COUNT
             ) {
             $lists = $this->getRemoteMaterialLists($account, $type, $offset, self::MATERIAL_MAX_COUNT);
 
+
+     
             $this->localizeRemoteMaterialLists($account, $lists, $type);
         }
     }
@@ -233,6 +236,8 @@ class Material
      */
     private function localizeRemoteMaterialLists($account, $lists, $type)
     {
+
+
         return array_map(function ($list) use ($type, $account) {
             $callFunc = 'storeRemote'.ucfirst($type);
 
@@ -310,11 +315,15 @@ class Material
      */
     private function storeRemoteNews($account, $news)
     {
+
+
+
         $mediaId = $news['media_id'];
 
         if ($this->getLocalMediaId($account->id, $mediaId)) {
             return;
         }
+
         $news['content']['news_item'] = $this->localizeNewsCoverMaterialId($account, $news['content']['news_item']);
 
         return $this->materialRepository->storeArticle(
@@ -336,7 +345,17 @@ class Material
     {
         $newsItems = array_map(function ($item) {
 
-            $item['cover_url'] = $this->mediaIdToSourceUrl($item['thumb_media_id']);
+            $account = app('viease.current_account');
+
+//            dd($item);
+
+            $item['cover_url'] = config('app.url').$this->downloadMaterial($account, 'image', $item['thumb_media_id']);
+
+            $item['cover_media_id'] = $item['thumb_media_id'];
+
+
+//            $this->materialRepository->storeWechatActicleCover($account->id, $image);
+//            $item['cover_url'] = $this->mediaIdToSourceUrl($item['thumb_media_id']);
 
             return $item;
 

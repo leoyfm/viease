@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use Overtrue\Wechat\MenuItem;
+use Overtrue\Wechat\Menu as WechatMenu;
+use App\Models\Account as AccountModel;
+use App\Repositories\MenuRepository;
 
 /**
  * 菜单服务提供类.
@@ -11,6 +14,12 @@ use Overtrue\Wechat\MenuItem;
  */
 class Menu
 {
+
+    public function __construct(MenuRepository $menuRepository){
+
+        $this->menuRepository = $menuRepository;
+    }
+
     /**
      * 取得远程公众号的菜单.
      *
@@ -33,6 +42,8 @@ class Menu
     public function syncToLocal(AccountModel $account)
     {
         $remoteMenus = $this->getFromRemote($account);
+
+        dd($remoteMenus);
 
         $menus = $this->makeLocalize($remoteMenus);
 
@@ -106,6 +117,11 @@ class Menu
      */
     private function saveToLocal($accountId, $menus)
     {
+        //delate firstly
+        // $this->menuRepository->destroyMenu( $accountId );
+
+        $menus = $this->menuRepository->parseMenus( $accountId, $menus);
+
         return $this->menuRepository->storeMulti($accountId, $menus);
     }
 
@@ -117,15 +133,17 @@ class Menu
      *
      * @return array
      */
-    private function resolveTextMenu(AccountModel $account, $menu)
+    private function resolveTextMenu($menu)
     {
-        $menu['type'] = 'click';
+        // $menu['type'] = 'click';
 
-        $mediaId = $this->materialService->saveText($account->id, $menu['value']);
+        // dd( $menu);
 
-        $menu['key'] = $this->eventService->makeMediaId($mediaId);
+        // $mediaId = $this->materialService->saveText($account->id, $menu['value']);
 
-        unset($menu['value']);
+        // $menu['key'] = $this->eventService->makeMediaId($mediaId);
+
+        // unset($menu['value']);
 
         return $menu;
     }
@@ -139,12 +157,12 @@ class Menu
      */
     private function resolveMediaIdMenu($menu)
     {
-        return false; //暂时关掉此类型处理 todo
-        $menu['type'] = 'click';
-        //mediaId类型属于永久素材类型
-        $menu['key'] = $this->eventService->makeMediaId();
+        // return false; //暂时关掉此类型处理 todo
+        // $menu['type'] = 'click';
+        // //mediaId类型属于永久素材类型
+        // $menu['key'] = $this->eventService->makeMediaId();
 
-        unset($menu['value']);
+        // unset($menu['value']);
 
         return $menu;
     }
@@ -222,7 +240,9 @@ class Menu
      */
     private function resolveViewMenu($menu)
     {
-        $menu['key'] = $menu['url'];
+
+
+        $menu['value'] = $menu['url'];
 
         unset($menu['url']);
 
@@ -368,10 +388,11 @@ class Menu
         $saveMenus = [];
 
         foreach ($menus as $menu) {
-            if (isset($menu['sub_button'])) {
+
+            if (isset($menu['sub_buttons'])) {
                 $menuItem = new MenuItem($menu['name']);
                 $subButtons = [];
-                foreach ($menu['sub_button'] as $subMenu) {
+                foreach ($menu['sub_buttons'] as $subMenu) {
                     $subButtons[] = new MenuItem($subMenu['name'], $subMenu['type'], $subMenu['key']);
                 }
                 $menuItem->buttons($subButtons);
@@ -379,6 +400,7 @@ class Menu
             } else {
                 $saveMenus[] = new MenuItem($menu['name'], $menu['type'], $menu['key']);
             }
+
         }
 
         return $saveMenus;

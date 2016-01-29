@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Menu\CreateRequest;
 use App\Services\Menu as MenuService;
+use Overtrue\Wechat\MenuItem;
 use App\Repositories\MenuRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -47,6 +48,7 @@ class MenuController extends Controller
      */
     public function getLists()
     {
+
         $menus = $this->menuRepository->lists($this->account()->id)->toArray();
 
         return $this->menuRepository->withMaterials($menus);
@@ -68,5 +70,25 @@ class MenuController extends Controller
         $this->menuRepository->storeMulti($accountId, $menus);
 
         return response()->json(['status' => true]);
+    }
+
+    public function getSync(MenuService $service){
+
+        $service->syncToLocal( $this->account() );
+
+        return response()->json(['status' => true]);
+    }
+
+    public function getApply(MenuService $service){
+
+
+        $service->saveToRemote( $this->account(), $this->menuRepository->lists($this->account()->id)->toArray());
+        
+        // dd( $menus);
+
+    }
+
+    private function syncToServer(){
+
     }
 }

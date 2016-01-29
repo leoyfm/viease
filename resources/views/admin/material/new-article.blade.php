@@ -38,7 +38,7 @@
                 <div class="form-group">
                     <label>封面<small>（小图片建议尺寸：200像素 * 200像素）</small></label>
                     <div>
-                        <button type="button" class="btn btn-light">上传</button>
+                        <button type="button" class="btn btn-light upload-image">上传</button>
                         <button type="button" class="btn btn-light">从图片库选择</button>
                         <label>
                             <input type="checkbox" name="show_cover_pic" value="" class="js-switch" data-size="small">
@@ -62,7 +62,8 @@
             <hr>
             <input type="hidden" name="cover_media_id">
             <input type="hidden" name="cover_url">
-            <button type="submit" class="btn btn-primary">保 存</button>
+            <button type="submit" class="btn btn-primary save">保 存</button>
+            <button type="submit" class="btn btn-primary">发 送</button>
             <button type="submit" class="btn btn-default">预 览</button>
         </div>
     </div>

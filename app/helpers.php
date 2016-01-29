@@ -12,6 +12,13 @@ function admin_url($uri)
     return url('admin/'.$uri);
 }
 
+function activity_view( $name, $data=array() ){
+    $args = func_get_args();
+    $args[0] = 'activity.'.$name;
+
+    return call_user_func_array('view', $args);
+}
+
 function admin_view($name)
 {
     $args = func_get_args();

@@ -62,7 +62,7 @@ class MaterialRepository
      */
     public function getMediaById($id)
     {
-        return $this->model->where('id', $mediaId)->with('childrens')->first();
+        return $this->model->where('id', $id)->with('childrens')->first();
     }
 
     /**
@@ -72,7 +72,7 @@ class MaterialRepository
      *
      * @return App\Models\Material|NULL
      */
-    public function getMaterialByMediaId($mediaId)
+    public function getMediaByMediaId($mediaId)
     {
         return $this->model->where('media_id', $mediaId)->with('childrens')->first();
     }
@@ -275,6 +275,24 @@ class MaterialRepository
         return $model->media_id;
     }
 
+    public function storeWechatActicleCover($accountId, $image)
+    {
+        $model = new $this->model();
+
+        $model->type = 'image';
+
+
+        $model->account_id = $accountId;
+
+        $model->original_id = $image['cover_media_id'];
+
+        $model->source_url = $image['cover_url'];
+
+        $model->save();
+
+        return $model->media_id;
+    }
+
     /**
      * 存储来自微信同步的声音素材.
      *
@@ -363,6 +381,7 @@ class MaterialRepository
 
         //判断多个与单个
         if (count($articles) >= 2) {
+
             return $this->storeMultiArticle(
                 $accountId,
                 $articles,
@@ -462,26 +481,23 @@ class MaterialRepository
     private function savePost($input)
     {
         if (isset($input['show_cover_pic'])) {
-            $showCover = $input['show_cover_pic'];
+            $showCover = true;
         } else {
-            $showCover = $input['show_cover'];
+            $showCover =false;
         }
 
-        if (isset($input['url'])) {
-            $sourceUrl = $input['url'];
-        } else {
-            $sourceUrl = $input['source_url'];
-        }
+        $sourceUrl = $input['source_url'];
+
 
         $article = new $this->model();
 
-        $article->description = $input['digest'];
+        $article->description = $input['description'];
 
         $article->source_url = $sourceUrl;
 
         $article->show_cover_pic = $showCover;
 
-        $article->cover_media_id = $input['thumb_media_id'];
+//        $article->cover_media_id = $input['thumb_media_id'];
 
         $article->fill($input);
 

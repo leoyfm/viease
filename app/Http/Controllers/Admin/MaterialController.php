@@ -9,6 +9,7 @@ use App\Repositories\MaterialRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Account;
+use App\Services\Material as MaterialService;
 
 /**
  * 素材管理.
@@ -54,9 +55,16 @@ class MaterialController extends Controller
      */
     public function getLists(Request $request)
     {
+
         $pageSize = $request->get('page_size', $this->pageSize);
 
         return $this->materialRepository->getList($this->account()->id, $request->get('type'), $pageSize);
+    }
+
+    public function getSync(MaterialService $service ){
+
+        $service->syncRemoteMaterial( $this->account(), 'news');
+
     }
 
     /**
@@ -68,6 +76,8 @@ class MaterialController extends Controller
      */
     public function getShow(Request $request)
     {
+
+
         if ($request->has('media_id')) {
             return $this->materialRepository->getMediaByMediaId($request->media_id);
         } else {
@@ -99,15 +109,26 @@ class MaterialController extends Controller
     {
         return  admin_view('material.new-article');
     }
+    public function getEditArticle(Request $request ){
+
+//        $article = $this->getShow($request );
+
+        // dd( $article );
+
+        return  admin_view('material.edit-article')->with(['id'=> $request->input('id')]);
+    }
 
     /**
      * 创建新图文.
      *
      * @param ArticleRequest $request request
      */
-    public function postNewArticle(ArticleRequest $request)
+    public function postNewArticle(Request $request)
     {
-        return $this->materialRepository->storeArticle($request->get('article'));
+
+
+
+        return $this->materialRepository->storeArticle($this->account()->id,$request->get('articles'));
     }
 
     /**

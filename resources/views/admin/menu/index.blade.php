@@ -2,7 +2,7 @@
 @section('content')
 <div class="console-content">
     <div class="page-header">
-        <h2 id="nav">菜单管理 <div class="pull-right"><button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="启用或停用菜单">停用</button></div></h2>
+        <h2 id="nav">菜单管理 <div class="pull-right"><button class="btn btn btn-sync" data-toggle="tooltip" data-placement="top" title="同步菜单">同步</button><button class="btn btn btn-apply" data-toggle="tooltip" data-placement="top" title="同步菜单到服务器">应用</button><button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="启用或停用菜单">停用</button></div></h2>
     </div>
     <div class="well row">
         <div class="col-md-4">
