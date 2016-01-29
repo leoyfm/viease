@@ -123,9 +123,12 @@ class MaterialController extends Controller
      *
      * @param ArticleRequest $request request
      */
-    public function postNewArticle(ArticleRequest $request)
+    public function postNewArticle(Request $request)
     {
-        return $this->materialRepository->storeArticle($request->get('article'));
+
+
+
+        return $this->materialRepository->storeArticle($this->account()->id,$request->get('articles'));
     }
 
     /**

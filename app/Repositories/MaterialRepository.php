@@ -381,6 +381,7 @@ class MaterialRepository
 
         //判断多个与单个
         if (count($articles) >= 2) {
+
             return $this->storeMultiArticle(
                 $accountId,
                 $articles,
@@ -480,26 +481,23 @@ class MaterialRepository
     private function savePost($input)
     {
         if (isset($input['show_cover_pic'])) {
-            $showCover = $input['show_cover_pic'];
+            $showCover = true;
         } else {
-            $showCover = $input['show_cover'];
+            $showCover =false;
         }
 
-        if (isset($input['url'])) {
-            $sourceUrl = $input['url'];
-        } else {
-            $sourceUrl = $input['source_url'];
-        }
+        $sourceUrl = $input['source_url'];
+
 
         $article = new $this->model();
 
-        $article->description = $input['digest'];
+        $article->description = $input['description'];
 
         $article->source_url = $sourceUrl;
 
         $article->show_cover_pic = $showCover;
 
-        $article->cover_media_id = $input['thumb_media_id'];
+//        $article->cover_media_id = $input['thumb_media_id'];
 
         $article->fill($input);
 

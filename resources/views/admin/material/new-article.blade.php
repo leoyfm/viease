@@ -62,7 +62,8 @@
             <hr>
             <input type="hidden" name="cover_media_id">
             <input type="hidden" name="cover_url">
-            <button type="submit" class="btn btn-primary">保 存</button>
+            <button type="submit" class="btn btn-primary save">保 存</button>
+            <button type="submit" class="btn btn-primary">发 送</button>
             <button type="submit" class="btn btn-default">预 览</button>
         </div>
     </div>
@@ -93,6 +94,6 @@
 @stop
 @section('js')
 <script>
-    require(['pages/material.edit-article']);
+    require(['pages/material.new-article']);
 </script>
 @stop

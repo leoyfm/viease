@@ -26,8 +26,9 @@ class CreateFansTable extends Migration
 			$table->string('province',300)->comment('省');
 			$table->string('country',300)->comment('国家');
 			$table->string('avatar',300)->comment('头像');
-			$table->integer('unionid')->comment('unionid');
+			$table->string('unionid',300)->comment('unionid');
 			$table->integer('liveness')->comment('用户活跃度');
+			$table->timestamp('subscribe')->nullable()->default(0)->comment('是否关注');
 			$table->timestamp('subscribed_at')->nullable()->default('0000-00-00 00:00:00')->comment('关注时间');
 			$table->timestamp('last_online_at')->comment('最后一次在线时间');
 			$table->timestamps();

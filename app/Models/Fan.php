@@ -29,6 +29,7 @@ class Fan extends Model
         'avatar',
         'unionid',
         'liveness',
+        'subscribe',
         'subscribed_at',
         'last_online_at',
                           ];
@@ -53,6 +54,7 @@ class Fan extends Model
         'avatar' => '头像',
         'unionid' => 'unionid',
         'liveness' => '活跃度',
+        'subscribe' => '是否关注',
         'subscribed_at' => '关注时间',
         'last_online_at' => '最后上线时间',
                          ];
@@ -62,5 +64,12 @@ class Fan extends Model
     public function getLocationAttribute()
     {
         return $this->province.' '.$this->city;
+    }
+
+    public function isSubscribed(){
+        if( $this->subscribe )
+            return true;
+        else
+            return false;
     }
 }

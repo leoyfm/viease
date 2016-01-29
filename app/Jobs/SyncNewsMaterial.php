@@ -30,6 +30,7 @@ class SyncNewsMaterial extends Job implements SelfHandling, ShouldQueue
     public function __construct($account)
     {
         $this->account = $account;
+
     }
 
     /**

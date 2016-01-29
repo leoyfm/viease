@@ -47,6 +47,29 @@ class FanRepository
                 ->paginate($pageSize);
     }
 
+    public function saveOrUpdate( $accountId, $user ){
+
+
+        $fan = $this->model
+            ->where('account_id', $accountId)
+            ->where('openid', $user['openid'])
+            ->first();
+
+        if( $fan ){
+            $fan->fill( $user );
+            $fan->save();
+            return $fan;
+        }else{
+
+            $user['account_id'] = $accountId;
+
+            $this->_savePost( $this->model, $user );
+
+            return $this->model;
+        }
+
+    }
+
     /**
      * 通过openid获取fans的id，无数据时创建后返回.
      *

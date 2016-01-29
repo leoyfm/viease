@@ -83,6 +83,10 @@ return [
                             'label' => '客服管理',
                             'uri'   => 'staff',
                         ],
+                        [
+                            'label' => '红包',
+                            'uri'   => 'hongbao',
+                        ],
                     ],
                 ],
             ],

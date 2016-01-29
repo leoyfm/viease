@@ -3,15 +3,33 @@
  *
  * @author overtrue <anzhengchao@gmail.com>
  */
-define(['jquery', 'uploader', 'util', 'repos/article-store', 'admin/common'], function ($, Uploader, Util, Article) {
+define(['jquery', 'uploader', 'util', 'repos/article-store','repos/material', 'admin/common'], function ($, Uploader, Util, Article,MaterialRepo) {
     $(function(){
         var $ue = UE.getEditor('container');
         var $form = $('.article-form');
         var $previewItemTemplate = _.template($('#preview-item-template').html());
         var $firstItem = $('.article-preview-item.first');
 
-        var $imageUploader = Uploader.make('.upload-image', 'image', function(){
+        var $imageUploader = Uploader.make('.upload-image', 'image', function(e){
 
+
+            console.log('upload',e);
+
+            var $item = $('.article-preview-item.active');
+
+            console.log('id', $item.prop('id'));
+
+            var $article = Article.get($item.prop('id'));
+
+            $article = $.extend( $article, e);
+
+            $article.cover_url = $article.source_url;
+            $article.source_url = '';
+
+
+            console.log('upload acticle',$article );
+
+            previewItem( $article);
         });
 
         //检查是否显示添加按钮
@@ -50,12 +68,17 @@ define(['jquery', 'uploader', 'util', 'repos/article-store', 'admin/common'], fu
             var $item = $('.article-preview-item.active');
 
             $item.find('.attr-title').html($attributes['title'] || '标题');
+
+            $cover =  $item.find('.article-preview-item-cover-placeholder');
+            $cover.css('background-image','url('+$attributes['cover_url']+')').css('background-size', 'cover')
         }
 
         // 保存form
         function saveForm () {
             var $id = $('.article-preview-item.active').prop('id');
             var $attributes = Util.parseForm($($form));
+
+            console.log('attr', $attributes );
 
             $attributes.content = $ue.getContent();
             Article.put($id, $attributes);
@@ -65,6 +88,21 @@ define(['jquery', 'uploader', 'util', 'repos/article-store', 'admin/common'], fu
 
         $form.on('keyup', saveForm);
         $ue.addListener('keyup', saveForm);
+
+        $('.btn.save').on('click', function(){
+
+            saveForm();
+
+            var articles = Article.all();
+
+            console.log('articles', articles );
+
+            var request = {'articles' : articles };
+            MaterialRepo.postArticle(request,function(e){
+                console.log('e', e);
+            });
+
+        })
 
         // 添加项目
         $('.articles-preview-container').on('click', '.add-new-item', function(){

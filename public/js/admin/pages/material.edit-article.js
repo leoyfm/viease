@@ -120,6 +120,8 @@ define(['jquery', 'uploader', 'util', 'repos/article-store','repos/material', 'a
 
             console.log('show article', article);
 
+            Article.clean();
+
             Article.put('article-first', article );
 
             for($id in article.childrens){

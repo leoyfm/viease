@@ -89,6 +89,10 @@ define(['jquery', 'util'], function($, Util){
             Repo.material.lists($request, $callback);
         },
 
+        postArticle: function($request, $callback){
+            Util.request('POST', 'material/new-article/',$request, $callback);
+        },
+
         /**
          * 获取素材
          *

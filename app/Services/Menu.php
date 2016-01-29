@@ -43,6 +43,8 @@ class Menu
     {
         $remoteMenus = $this->getFromRemote($account);
 
+        dd($remoteMenus);
+
         $menus = $this->makeLocalize($remoteMenus);
 
         return $this->saveToLocal($account->id, $menus);

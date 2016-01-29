@@ -24,7 +24,7 @@ class ModelObserverProvider extends ServiceProvider
         Material::observe('App\Observers\MaterialObserver');
         Account::observe('App\Observers\AccountObserver');
         FanGroup::observe('App\Observers\FanGroupObserver');
-        Fan::observe('App\Observers\FanObserver');
+        // Fan::observe('App\Observers\FanObserver');
     }
 
     public function register()
