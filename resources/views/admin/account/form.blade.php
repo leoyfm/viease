@@ -12,6 +12,8 @@
         @col_input('text','wechat_account',$errors,'*微信号',isset($account) ? $account->wechat_account : old('wechat_account') ,['placeholder' => '例如：viease'])
         @col_input('text','app_id',$errors,'AppID（公众号）',isset($account) ? $account->app_id : old('app_id'),['placeholder' => '用于自定义菜单等高级功能'])
         @col_input('text','app_secret',$errors,'AppSecret ',isset($account) ? $account->app_secret : old('app_secret'),['placeholder' => '用于自定义菜单等高级功能'])
+        @col_input('text','mch_id',$errors,'MCh Id ',isset($account) ? $account->mch_id : old('mch_id'),['placeholder' => '商户id'])
+        @col_input('text','mch_key',$errors,'MCh Key ',isset($account) ? $account->mch_key : old('mch_key'),['placeholder' => '商户key'])
         @col_select('account_type', [1 => '订阅号', 2 => '服务号'], $errors, '微信号类型 ', isset($account) ? $account->account_type : old('account_type'),['placeholder' => '认证服务号是指每年向微信官方交300元认证费的公众号'])
         @col_submit('提交')
         @endform

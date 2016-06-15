@@ -18,7 +18,7 @@
         <div class="t">上传照片：<span>照片至少要上传1张，最多可上传3张</span></div>
         <div class="row">
           <label>照片</label>
-
+          
           <input class="file" type="file" name="file1" />
         </div>
       </div>
@@ -43,7 +43,7 @@
 <!-- 弹窗 -->
 <div class="popup">
   <div class="popup_bg"> </div>
-  <div class="popup_box"><img src="{{ asset('/assetactivity/images/loading.gif') }}" alt="" />请稍后...</div>
+  <div class="popup_box"><img src="{{ asset('/assetactivity/nianhuo/images/loading.gif') }}" alt="" />请稍后...</div>
 </div>
 <!-- 弹窗 end --> 
 @include('activity.nianhuo.rule')

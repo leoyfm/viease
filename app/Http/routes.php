@@ -17,10 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 Route::any('/api', 'ServerController@server');
 Route::any('/api/upload', 'ServerController@upload');
 
-Route::any('/qiniu', 'QinNiuController@test');
 
 /**
  * videos
@@ -48,15 +49,37 @@ $activity = [
 
 ];
 
-Route::get('/subscribe', function () {
+Route::get('/subscribe/{id}', function ($id) {
 
-    return activity_view('subscribe');
+    if( $id )
+        return activity_view('subscribe.'.$id);
+
+    return activity_view('subscribe.default');
+
 });
 
+Route::get('/nianhuo/winner', 'Activity\NianHuoController@winner');
+
+
+Route::controller('shake', 'Activity\ShakeController');
+
+
+//Route::controller('activities', 'Activity\ActivityController');
+//Route::get('activities/{id}', 'Activity\ActivityController@init');
 Route::group( $activity, function(){
+
+
+    Route::get('/{id}', 'ActivityController@init');
 
     Route::get('/nianhuo/callback', 'NianHuoController@callback');
     Route::get('/nianhuo/uploadurl', 'NianHuoController@uploadUrl');
+
+    Route::get('/team/callback', 'TeamController@callback');
+    Route::get('/team/uploadurl', 'TeamController@uploadUrl');
+
+    Route::get('/liuyi/callback', 'LiuYiController@callback');
+    Route::get('/liuyi/uploadurl', 'LiuYiController@uploadUrl');
+
     Route::group(['prefix'=>'nianhuo'], function(){
         Route::get('/', 'NianHuoController@index');
         Route::get('join', 'NianHuoController@join');
@@ -70,7 +93,59 @@ Route::group( $activity, function(){
 
         //test
         Route::get('/index1', 'NianHuoController@index1');
+
+
+
     });
+
+    //六一
+    Route::group(['prefix' => 'liuyi'], function(){
+
+        Route::get('/index', 'LiuYiController@index');
+        Route::get('join', 'LiuYiController@join');
+        Route::post('join', 'LiuYiController@join');
+        Route::post('addticket/{id}', 'LiuYiController@addTicket');
+        Route::get('vote/{id}', 'LiuYiController@vote');
+
+        Route::get('content/{id}', 'LiuYiController@content');
+        Route::get('most', 'LiuYiController@most');
+    });
+
+    Route::controller('shake', 'ShakeController');
+
+    Route::get('index', function () {
+
+        return activity_view('team.index');
+    });
+
+    //端午节
+    Route::group(['prefix' => 'dwj'], function(){
+
+        Route::get('index', 'DwjController@index');
+        Route::post('submit', 'DwjController@submit');
+
+        Route::get('test', 'DwjController@test');
+
+        Route::get('most', 'DwjController@most');
+    });
+
+    Route::controller('shake', 'ShakeController');
+
+    Route::get('index', function () {
+
+        return activity_view('team.index');
+    });
+
+//    Route::group([ 'prefix' => 'shake'], function(){
+//
+//        Route::controller('auth', 'AuthController');
+//
+//        Route::get('/', 'ShakeController@index');
+//
+//        Route::get('/shake', 'ShakeController@index');
+//    });
+
+
 
 });
 
@@ -100,6 +175,7 @@ Route::group($admin, function () {
             'reply' => 'ReplyController',
             'upload' => 'UploadController',
             'hongbao' => 'HongBaoController',
+            'activity' => 'ActivityController',
         ]);
     });
 });

@@ -16,7 +16,7 @@
       <div class="pic">
         <div class="t">上传照片：</div>
         <div class="row" id="container">
-          <button id="pickfiles" class="btn-primary btn-lg btn-block sub bg" type="submit" style="background-image:url({{ asset('/assetactivity/images/file_pic.jpg') }});"></button>
+          <button id="pickfiles" class="btn-primary btn-lg btn-block sub bg" type="submit" style="background-image:url({{ asset('/assetactivity/nianhuo/images/file_pic.jpg') }});"></button>
           <label class="pos_a" style="left:0; top:0;">图片</label>
           <input class="file" type="hidden" name="file1" id="file1" error="on" /><!-- -->
         </div>
@@ -42,7 +42,7 @@
 <!-- 弹窗 -->
 <div class="popup">
   <div class="popup_bg"> </div>
-  <div class="popup_box"><img src="{{ asset('/assetactivity/images/loading.gif') }}" alt="" />请稍后...</div>
+  <div class="popup_box"><img src="{{ asset('/assetactivity/nianhuo/images/loading.gif') }}" alt="" />请稍后...</div>
 </div>
 <!-- 弹窗 end --> 
 @include('activity.nianhuo.rule')

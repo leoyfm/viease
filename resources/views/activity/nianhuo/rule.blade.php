@@ -18,22 +18,22 @@
         <div class="round txt_c"><i class="fa fa-gift color "></i></div>
         活动奖励 </div>
     <ul class="ul2 txt_c">
-        <li><img src="{{ asset('/assetactivity/images/prize_1.jpg') }}" alt="" />
+        <li><img src="{{ asset('/assetactivity/nianhuo/images/prize_1.jpg') }}" alt="" />
             <div>
                 <p>一等奖：</p>
                 年货大礼包（2名）</div>
         </li>
-        <li><img src="{{ asset('/assetactivity/images/prize_2.jpg') }}" alt="" />
+        <li><img src="{{ asset('/assetactivity/nianhuo/images/prize_2.jpg') }}" alt="" />
             <div>
                 <p>二等奖：</p>
                 年货礼包（8名）</div>
         </li>
-        <li><img src="{{ asset('/assetactivity/images/prize_3.jpg') }}" alt="" />
+        <li><img src="{{ asset('/assetactivity/nianhuo/images/prize_3.jpg') }}" alt="" />
             <div>
                 <p>三等奖：</p>
                 年货小礼包（20名）</div>
         </li>
-        <li><img src="{{ asset('/assetactivity/images/pic_p.jpg') }}" alt="" />
+        <li><img src="{{ asset('/assetactivity/nianhuo/images/pic_p.jpg') }}" alt="" />
             <div>
                 <p>年货滚滚来</p>
                 你准备好了吗</div>

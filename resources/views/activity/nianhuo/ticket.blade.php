@@ -6,7 +6,7 @@
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
   <link rel="shortcut icon" type="image/x-icon" href="{{ asset('/assetactivity/images/favicon.ico') }}" media="screen" />
-  <title>首页</title>
+  <title>分享页面</title>
   <link href="{{ asset('/assetactivity/style/style.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('/assetactivity/style/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="{{ asset('/assetactivity/js/jquery.min.js') }}"></script>
@@ -22,6 +22,9 @@
       <p class="tit">分享</p>
       <p>点击右上方分享到朋友圈，可额外获得一次投票机会。 </p>
       <p>分享多多，投票多多。</p>
+      <div class="txt_c">
+        <div class="btn bg dis_ib"><a class="bg txt_c dis_ib" href="{{ url('activities/nianhuo') }}" title="返回首页">返回首页</a></div>
+      </div>
     </div>
   </div>
   <div class="bottom pos_r" style="background:#FFD9B5;"><img width="100%" src="{{ asset('/assetactivity/images/bottom_pic.png') }}" alt="" />

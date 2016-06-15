@@ -6,7 +6,7 @@
  * Time: 6:05 PM
  */
 
-namespace app\Models;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,8 +20,7 @@ class Activity extends Model
         'desc',
         'account_id',
         'type',
-        'created_by',
-        'rule',
+        'url'
     ];
 
 }

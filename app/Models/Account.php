@@ -32,6 +32,8 @@ class Account extends Model
         'app_id',
         'app_secret',
         'account_type',
+        'mch_id',
+        'mch_key',
                           ];
 
     /**
@@ -47,4 +49,8 @@ class Account extends Model
         'app_secret' => '应用secret',
         'account_type' => '账户类型',
                              ];
+
+    public function activities(){
+        return $this->hasMany('App\Models\Activity', 'id', 'account_id');
+    }
 }

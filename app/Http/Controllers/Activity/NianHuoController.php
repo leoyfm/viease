@@ -191,5 +191,11 @@ class NianHuoController extends Controller
 //        }
 	}
 
+	public function winner(Request $request ){
+		$result = $this->service->getTopParticipators();
+
+		return activity_view('nianhuo.winner',['users'=> $result]);
+	}
+
 
 }

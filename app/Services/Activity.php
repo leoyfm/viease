@@ -39,6 +39,8 @@ class Activity{
         return $this->activity_id;
     }
 
+
+
     /**
      * @param $id
      * @return Activist
